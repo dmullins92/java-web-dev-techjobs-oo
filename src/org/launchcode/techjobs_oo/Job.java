@@ -21,17 +21,19 @@ public class Job {
         nextId++;
     }
 
-    public Job(String aName,
-               Employer aEmployer,
-               Location aLocation,
-               PositionType aPositionType,
-               CoreCompetency aCoreCompetency) {
+    public Job(String name,
+               Employer employer,
+               Location location,
+               PositionType positionType,
+               CoreCompetency coreCompetency) {
         this();
-        this.name = aName;
-        this.employer = aEmployer;
-        this.location = aLocation;
-        this.positionType = aPositionType;
-        this.coreCompetency = aCoreCompetency;
+        if (name.equals("")) {
+            this.name = "Data not available";
+        } else this.name = name;
+        this.employer = employer;
+        this.location = location;
+        this.positionType = positionType;
+        this.coreCompetency = coreCompetency;
     }
 
     // TODO: Add custom equals and hashCode methods. Consider two Job objects "equal" when their id fields
@@ -96,5 +98,22 @@ public class Job {
 
     public void setCoreCompetency(CoreCompetency coreCompetency) {
         this.coreCompetency = coreCompetency;
+    }
+
+    @Override
+    public String toString() {
+        if (this.getName() == null &&
+        this.getEmployer() == null &&
+        this.getLocation() == null &&
+        this.getPositionType() == null &&
+        this.getCoreCompetency() == null) {
+            return "OOPS! This job does not seem to exist.";
+        } else return "\n" +
+                "ID: " + id + "\n" +
+                "Name: " + name + "\n" +
+                "Employer: " + employer + "\n" +
+                "Location: " + location + "\n" +
+                "Position Type: " + positionType + "\n" +
+                "Core Competency: " + coreCompetency + "\n";
     }
 }

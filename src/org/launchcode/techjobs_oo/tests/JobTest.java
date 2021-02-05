@@ -5,13 +5,14 @@ import org.launchcode.techjobs_oo.*;
 import static org.junit.Assert.*;
 
 public class JobTest {
-    private Job test_jobWithIdConstructorOne;
-    private Job test_jobWithIdConstructorTwo;
-    private Job test_jobWithFullConstructorOne;
-    private Job test_jobWithFullConstructorTwo;
+    private static Job test_jobWithIdConstructorOne;
+    private static Job test_jobWithIdConstructorTwo;
+    private static Job test_jobWithFullConstructorOne;
+    private static Job test_jobWithFullConstructorTwo;
+    private static Job test_jobWithEmptyProperties;
 
-    @Before
-    public void createJobObjects() {
+    @BeforeClass
+    public static void createJobObjects() {
     test_jobWithIdConstructorOne = new Job();
     test_jobWithIdConstructorTwo = new Job();
 
@@ -25,7 +26,14 @@ public class JobTest {
             new Location("Desert"),
             new PositionType("Quality control"),
             new CoreCompetency("Persistence"));
-    }
+
+    test_jobWithEmptyProperties = new Job("",
+            new Employer(""),
+            new Location(""),
+            new PositionType(""),
+            new CoreCompetency(""));
+
+}
 
     @Test
     public void testSettingJobId() {
@@ -60,5 +68,48 @@ public class JobTest {
     @Test
     public void testJobsForEquality() {
         assertFalse(test_jobWithFullConstructorOne.equals(test_jobWithFullConstructorTwo));
+    }
+
+    @Test
+    public void shouldPrintNewLineAtBeginningAndEndOfInfo() {
+        assertTrue(test_jobWithFullConstructorOne.toString().startsWith("\n"));
+        assertTrue(test_jobWithFullConstructorOne.toString().endsWith("\n"));
+    }
+
+    @Test
+    public void toStringShouldPrintEachPropertyOnSeparateLine() {
+        String expected = """
+                
+                ID: 3                
+                Name: Product tester
+                Employer: ACME
+                Location: Desert
+                Position Type: Quality control
+                Core Competency: Persistence
+                """;
+        String actual = test_jobWithFullConstructorOne.toString();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void returnsDataNotAvailableOnEmptyField() {
+        String expected = """
+                
+                ID: 5                
+                Name: Data not available
+                Employer: Data not available
+                Location: Data not available
+                Position Type: Data not available
+                Core Competency: Data not available
+                """;
+        String actual = test_jobWithEmptyProperties.toString();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void returnsErrorIfOnlyID() {
+        String actual = test_jobWithIdConstructorOne.toString();
+        assertEquals("OOPS! This job does not seem to exist.", actual);
     }
 }
