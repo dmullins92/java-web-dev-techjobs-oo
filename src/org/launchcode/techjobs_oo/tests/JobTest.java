@@ -58,17 +58,9 @@ public class JobTest {
         CoreCompetency coreCompetency = testJobWithFullConstructorOne.getCoreCompetency();
 
         assertEquals("Product tester", name);
-
-        assertTrue(employer instanceof Employer);
         assertEquals("ACME", employer.getValue());
-
-        assertTrue(location instanceof Location);
         assertEquals("Desert", location.getValue());
-
-        assertTrue(positionType instanceof PositionType);
         assertEquals("Quality control", positionType.getValue());
-
-        assertTrue(coreCompetency instanceof CoreCompetency);
         assertEquals("Persistence", coreCompetency.getValue());
     }
 
@@ -121,7 +113,7 @@ public class JobTest {
     }
 
     @Test
-    public void returnsErrorIfOnlyIDAndEmptyFields() {
+    public void returnsErrorIfOnlyIDAndEmptyStringFields() {
         String actual = testJobWithAllEmptyProperties.toString();
         assertEquals("OOPS! This job does not seem to exist.", actual);
     }
