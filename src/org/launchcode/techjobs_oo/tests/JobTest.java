@@ -5,50 +5,57 @@ import org.launchcode.techjobs_oo.*;
 import static org.junit.Assert.*;
 
 public class JobTest {
-    private static Job test_jobWithIdConstructorOne;
-    private static Job test_jobWithIdConstructorTwo;
-    private static Job test_jobWithFullConstructorOne;
-    private static Job test_jobWithFullConstructorTwo;
-    private static Job test_jobWithEmptyProperties;
+    private static Job testJobWithIdConstructorOne;
+    private static Job testJobWithIdConstructorTwo;
+    private static Job testJobWithFullConstructorOne;
+    private static Job testJobWithFullConstructorTwo;
+    private static Job testJobWithSomeEmptyProperties;
+    private static Job testJobWithAllEmptyProperties;
 
     @BeforeClass
     public static void createJobObjects() {
-    test_jobWithIdConstructorOne = new Job();
-    test_jobWithIdConstructorTwo = new Job();
+    testJobWithIdConstructorOne = new Job();
+    testJobWithIdConstructorTwo = new Job();
 
-    test_jobWithFullConstructorOne = new Job("Product tester",
+    testJobWithFullConstructorOne = new Job("Product tester",
             new Employer("ACME"),
             new Location("Desert"),
             new PositionType("Quality control"),
             new CoreCompetency("Persistence"));
-    test_jobWithFullConstructorTwo = new Job("Product tester",
+    testJobWithFullConstructorTwo = new Job("Product tester",
             new Employer("ACME"),
             new Location("Desert"),
             new PositionType("Quality control"),
             new CoreCompetency("Persistence"));
 
-    test_jobWithEmptyProperties = new Job("",
+    testJobWithSomeEmptyProperties = new Job("Test Job",
             new Employer(""),
             new Location(""),
-            new PositionType(""),
-            new CoreCompetency(""));
+            new PositionType("Unknown Test"),
+            new CoreCompetency("Who Really Knows?"));
+
+        testJobWithAllEmptyProperties = new Job("",
+                new Employer(""),
+                new Location(""),
+                new PositionType(""),
+                new CoreCompetency(""));
 
 }
 
     @Test
     public void testSettingJobId() {
-        int idOne = test_jobWithIdConstructorOne.getId();
-        int idTwo = test_jobWithIdConstructorTwo.getId();
+        int idOne = testJobWithIdConstructorOne.getId();
+        int idTwo = testJobWithIdConstructorTwo.getId();
         assertNotEquals(idOne, idTwo);
     }
 
     @Test
     public void testJobConstructorSetsAllFields() {
-        String name = test_jobWithFullConstructorOne.getName();
-        Employer employer = test_jobWithFullConstructorOne.getEmployer();
-        Location location = test_jobWithFullConstructorOne.getLocation();
-        PositionType positionType = test_jobWithFullConstructorOne.getPositionType();
-        CoreCompetency coreCompetency = test_jobWithFullConstructorOne.getCoreCompetency();
+        String name = testJobWithFullConstructorOne.getName();
+        Employer employer = testJobWithFullConstructorOne.getEmployer();
+        Location location = testJobWithFullConstructorOne.getLocation();
+        PositionType positionType = testJobWithFullConstructorOne.getPositionType();
+        CoreCompetency coreCompetency = testJobWithFullConstructorOne.getCoreCompetency();
 
         assertEquals("Product tester", name);
 
@@ -67,27 +74,27 @@ public class JobTest {
 
     @Test
     public void testJobsForEquality() {
-        assertFalse(test_jobWithFullConstructorOne.equals(test_jobWithFullConstructorTwo));
+        assertFalse(testJobWithFullConstructorOne.equals(testJobWithFullConstructorTwo));
     }
 
     @Test
     public void shouldPrintNewLineAtBeginningAndEndOfInfo() {
-        assertTrue(test_jobWithFullConstructorOne.toString().startsWith("\n"));
-        assertTrue(test_jobWithFullConstructorOne.toString().endsWith("\n"));
+        assertTrue(testJobWithFullConstructorOne.toString().startsWith("\n"));
+        assertTrue(testJobWithFullConstructorOne.toString().endsWith("\n"));
     }
 
     @Test
     public void toStringShouldPrintEachPropertyOnSeparateLine() {
         String expected = """
-                
+                                
                 ID: 3                
                 Name: Product tester
                 Employer: ACME
                 Location: Desert
                 Position Type: Quality control
-                Core Competency: Persistence
+                Core Competency: Persistence                
                 """;
-        String actual = test_jobWithFullConstructorOne.toString();
+        String actual = testJobWithFullConstructorOne.toString();
         assertEquals(expected, actual);
     }
 
@@ -96,20 +103,26 @@ public class JobTest {
         String expected = """
                 
                 ID: 5                
-                Name: Data not available
+                Name: Test Job
                 Employer: Data not available
                 Location: Data not available
-                Position Type: Data not available
-                Core Competency: Data not available
+                Position Type: Unknown Test
+                Core Competency: Who Really Knows?
                 """;
-        String actual = test_jobWithEmptyProperties.toString();
+        String actual = testJobWithSomeEmptyProperties.toString();
 
         assertEquals(expected, actual);
     }
 
     @Test
-    public void returnsErrorIfOnlyID() {
-        String actual = test_jobWithIdConstructorOne.toString();
+    public void returnsErrorIfOnlyIDAndNullFields() {
+        String actual = testJobWithIdConstructorOne.toString();
+        assertEquals("OOPS! This job does not seem to exist.", actual);
+    }
+
+    @Test
+    public void returnsErrorIfOnlyIDAndEmptyFields() {
+        String actual = testJobWithAllEmptyProperties.toString();
         assertEquals("OOPS! This job does not seem to exist.", actual);
     }
 }
